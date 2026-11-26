@@ -1,0 +1,1425 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FPoly Digital Vault | Thư Viện Số Cá Nhân - Nguyễn Đình Đăng Nhân (PK04809)</title>
+    
+    <!-- Tải Tailwind CSS qua CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tải Font chữ Inter & JetBrains Mono chuẩn phong cách Lập trình viên -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tải FontAwesome 6 để hiển thị hệ thống biểu tượng công nghệ -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Cấu hình bảng màu thương hiệu FPT & hiệu ứng động trong Tailwind -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        fpt: {
+                            orange: '#F37021',
+                            orangeDark: '#D95B12',
+                            blue: '#0054A6',
+                            green: '#0DB14B',
+                            darkBg: '#0B1120',
+                            darkCard: '#131C31',
+                            darkBorder: '#1E293B'
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow-pulse': 'glowPulse 4s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        glowPulse: {
+                            '0%, 100%': { opacity: '0.45' },
+                            '50%': { opacity: '0.85' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- CSS tùy chỉnh cho hiệu ứng lưới công nghệ, kính mờ, thẻ 3D và trình chiếu Slide -->
+    <style>
+        /* Thanh cuộn tùy chỉnh tông cam FPT */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(243, 112, 33, 0.55);
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #F37021;
+        }
+
+        /* Hiệu ứng kính mờ (Glassmorphism) cho Navbar */
+        .glass-header {
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+
+        /* Nền lưới công nghệ (Tech Grid Pattern) cho Hero Banner */
+        .bg-tech-grid {
+            background-size: 32px 32px;
+            background-image: 
+                linear-gradient(to right, rgba(243, 112, 33, 0.07) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 84, 166, 0.07) 1px, transparent 1px);
+        }
+        .dark .bg-tech-grid {
+            background-image: 
+                linear-gradient(to right, rgba(243, 112, 33, 0.1) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(56, 189, 248, 0.08) 1px, transparent 1px);
+        }
+
+        /* Chữ Gradient thương hiệu FPT */
+        .text-fpt-gradient {
+            background: linear-gradient(135deg, #F37021 0%, #FF944D 48%, #0054A6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .dark .text-fpt-gradient {
+            background: linear-gradient(135deg, #F37021 0%, #FFB074 50%, #38BDF8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Hiệu ứng thẻ nổi 3D & phát sáng viền khi di chuột */
+        .card-tilt {
+            transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+        }
+        .card-tilt:hover {
+            transform: translateY(-7px) scale(1.015);
+            box-shadow: 0 22px 38px -12px rgba(243, 112, 33, 0.28);
+            border-color: #F37021;
+        }
+
+        /* Hiệu ứng xuất hiện mượt mà khi cuộn trang (Reveal) */
+        .reveal {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1), transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Con trỏ nhấp nháy cho hiệu ứng gõ chữ */
+        .typing-cursor::after {
+            content: '▋';
+            color: #F37021;
+            margin-left: 4px;
+            animation: blinkCursor 0.9s infinite;
+        }
+        @keyframes blinkCursor {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0; }
+        }
+
+        /* Hiệu ứng chuyển cảnh Slide mượt mà */
+        .slide-panel {
+            display: none;
+            animation: slideEntrance 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .slide-panel.active {
+            display: flex;
+        }
+        @keyframes slideEntrance {
+            from {
+                opacity: 0;
+                transform: translateX(28px) scale(0.985);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+            }
+        }
+
+        /* Tối ưu khung Slide khi bật chế độ Toàn màn hình (Fullscreen) */
+        #slide-deck-wrapper:fullscreen {
+            width: 100vw;
+            height: 100vh;
+            border-radius: 0;
+            background-color: #0B1120;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        #slide-deck-wrapper:fullscreen .slide-stage {
+            flex-grow: 1;
+            min-height: 0;
+        }
+
+        /* Trạng thái Active cho mục lục đang xem (Scrollspy) */
+        .toc-anchor.active-toc {
+            border-color: #F37021;
+            background-color: rgba(243, 112, 33, 0.12);
+            box-shadow: 0 8px 20px -6px rgba(243, 112, 33, 0.25);
+        }
+        .nav-anchor.active-nav {
+            color: #F37021;
+            background-color: rgba(243, 112, 33, 0.12);
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-fpt-darkBg dark:text-slate-100 transition-colors duration-300 selection:bg-fpt-orange selection:text-white">
+
+    <!-- 1. THANH TIẾN TRÌNH ĐỌC SÁCH (READING PROGRESS BAR) -->
+    <div class="fixed top-0 left-0 w-full h-1.5 z-50 bg-slate-200/60 dark:bg-slate-800/70">
+        <div id="reading-progress" class="h-full bg-gradient-to-r from-fpt-orange via-amber-500 to-fpt-blue w-0 transition-all duration-150"></div>
+    </div>
+
+    <!-- 2. THANH ĐIỀU HƯỚNG KÍNH MỜ CỐ ĐỊNH (STICKY GLASS NAVBAR) -->
+    <header class="sticky top-1.5 z-40 max-w-7xl mx-auto px-3 sm:px-6">
+        <nav class="glass-header bg-white/85 dark:bg-fpt-darkCard/85 border border-slate-200/80 dark:border-slate-700/70 rounded-2xl shadow-lg px-4 py-3 flex items-center justify-between">
+            <!-- Logo Thương Hiệu Sinh Viên FPT -->
+            <a href="#top" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-fpt-orange to-fpt-blue flex items-center justify-center text-white shadow-md group-hover:rotate-6 transition-transform">
+                    <i class="fa-solid fa-book-bookmark text-lg"></i>
+                </div>
+                <div>
+                    <span class="font-extrabold text-base sm:text-lg tracking-tight block leading-none">
+                        FPoly <span class="text-fpt-orange">DigitalVault</span>
+                    </span>
+                    <span class="text-[11px] font-mono text-slate-500 dark:text-slate-400">Đăng Nhân • PK04809 • Tây Nguyên</span>
+                </div>
+            </a>
+
+            <!-- Menu liên kết nhanh tới từng mục lục (Desktop) -->
+            <div class="hidden xl:flex items-center gap-1 text-sm font-medium">
+                <a href="#muc-luc" class="px-3 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-600 dark:text-slate-300">
+                    <i class="fa-solid fa-list-ul mr-1 text-fpt-orange"></i>Mục lục
+                </a>
+                <a href="#gioi-thieu" data-nav="gioi-thieu" class="nav-anchor px-3 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">1. Hồ sơ & Lộ trình</a>
+                <a href="#tai-lieu-lap-trinh" data-nav="tai-lieu-lap-trinh" class="nav-anchor px-3 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">2. Lập trình & Web</a>
+                <a href="#tin-hoc-he-thong" data-nav="tin-hoc-he-thong" class="nav-anchor px-3 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">3. Tin học & Hệ thống</a>
+                <a href="#du-an-ky-nang" data-nav="du-an-ky-nang" class="nav-anchor px-3 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">4. Dự án & Kỹ năng</a>
+                <a href="#trinh-chieu-slides" data-nav="trinh-chieu-slides" class="nav-anchor px-3.5 py-2 rounded-xl bg-fpt-orange/15 text-fpt-orange hover:bg-fpt-orange hover:text-white transition-colors font-semibold">
+                    <i class="fa-solid fa-display mr-1.5"></i>5. Slides (1–8)
+                </a>
+            </div>
+
+            <!-- Nút Chuyển Chế Độ Sáng / Tối & Nút Menu Mobile -->
+            <div class="flex items-center gap-2">
+                <button id="theme-toggle" aria-label="Chuyển đổi chế độ Sáng/Tối" class="px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-amber-400 hover:ring-2 hover:ring-fpt-orange transition-all cursor-pointer flex items-center gap-2 text-xs sm:text-sm font-semibold">
+                    <i id="theme-icon" class="fa-solid fa-moon"></i>
+                    <span id="theme-text" class="hidden sm:inline">Chế độ Tối</span>
+                </button>
+                
+                <button id="mobile-menu-toggle" aria-label="Mở menu điều hướng" class="xl:hidden p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:text-fpt-orange cursor-pointer">
+                    <i class="fa-solid fa-bars text-base"></i>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Menu thả xuống trên Mobile / Tablet -->
+        <div id="mobile-menu" class="hidden xl:hidden mt-2 glass-header bg-white/95 dark:bg-fpt-darkCard/95 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 shadow-xl space-y-1.5">
+            <a href="#muc-luc" class="mobile-nav-link block px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800/80 font-bold text-fpt-orange">
+                <i class="fa-solid fa-compass mr-2"></i>Mục Lục Tổng Quan
+            </a>
+            <a href="#gioi-thieu" class="mobile-nav-link block px-4 py-2.5 rounded-xl hover:bg-fpt-orange/10 hover:text-fpt-orange font-medium">Mục 01: Hồ sơ & Lộ trình Năm nhất FPoly (#gioi-thieu)</a>
+            <a href="#tai-lieu-lap-trinh" class="mobile-nav-link block px-4 py-2.5 rounded-xl hover:bg-fpt-orange/10 hover:text-fpt-orange font-medium">Mục 02: Lập trình Web & GitHub Pages (#tai-lieu-lap-trinh)</a>
+            <a href="#tin-hoc-he-thong" class="mobile-nav-link block px-4 py-2.5 rounded-xl hover:bg-fpt-orange/10 hover:text-fpt-orange font-medium">Mục 03: Tin học Văn phòng & Hệ thống (#tin-hoc-he-thong)</a>
+            <a href="#du-an-ky-nang" class="mobile-nav-link block px-4 py-2.5 rounded-xl hover:bg-fpt-orange/10 hover:text-fpt-orange font-medium">Mục 04: Dự án Thực tế & Hạ tầng PC (#du-an-ky-nang)</a>
+            <a href="#trinh-chieu-slides" class="mobile-nav-link block px-4 py-2.5 rounded-xl bg-fpt-orange text-white font-semibold">Mục 05: Trình chiếu Tương tác (Slide 1 → Slide 8)</a>
+        </div>
+    </header>
+
+    <main id="top" class="max-w-7xl mx-auto px-4 sm:px-6 pt-8 pb-20 space-y-16">
+
+        <!-- 3. HERO BANNER VỚI LƯỚI CÔNG NGHỆ & HIỆU ỨNG GÕ CHỮ -->
+        <section class="relative overflow-hidden rounded-3xl bg-white dark:bg-fpt-darkCard bg-tech-grid border border-slate-200/90 dark:border-slate-800 p-6 sm:p-10 lg:p-14 shadow-xl">
+            <!-- Quầng sáng công nghệ trang trí (Glow Orbs) -->
+            <div class="absolute -top-24 -right-24 w-80 h-80 bg-fpt-orange/20 rounded-full blur-3xl animate-glow-pulse pointer-events-none"></div>
+            <div class="absolute -bottom-24 -left-24 w-80 h-80 bg-fpt-blue/20 rounded-full blur-3xl animate-glow-pulse pointer-events-none"></div>
+
+            <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <div class="lg:col-span-7 space-y-6">
+                    <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-fpt-orange/10 border border-fpt-orange/30 text-fpt-orange text-xs sm:text-sm font-semibold">
+                        <span class="w-2 h-2 rounded-full bg-fpt-orange animate-ping"></span>
+                        Nguyễn Đình Đăng Nhân • MSSV: PK04809 • FPT Polytechnic Tây Nguyên
+                    </div>
+
+                    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight">
+                        Thư Viện Số Cá Nhân <br>
+                        <span class="text-fpt-gradient">Hành Trang Sinh Viên IT</span>
+                    </h1>
+
+                    <!-- Dòng lệnh Terminal với hiệu ứng gõ chữ (Typing Effect) -->
+                    <div class="font-mono text-xs sm:text-sm text-slate-700 dark:text-slate-200 bg-slate-100/90 dark:bg-slate-950/90 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-inner">
+                        <div class="flex items-center gap-1.5 mb-2 pb-2 border-b border-slate-200 dark:border-slate-800 text-[11px] text-slate-400">
+                            <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+                            <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                            <span class="ml-1">bash — pk04809@fpoly-taynguyen</span>
+                        </div>
+                        <span class="text-fpt-orange font-bold">nhannd@pk04809:~$</span> 
+                        <span id="typing-output" class="typing-cursor"></span>
+                    </div>
+
+                    <p class="text-slate-600 dark:text-slate-300 text-base sm:text-lg leading-relaxed">
+                        Không gian số hóa toàn bộ học liệu, đồ án thực hành và nhật ký phát triển của sinh viên năm nhất ngành Công nghệ thông tin. <strong>Bấm trực tiếp vào bất kỳ thẻ tài liệu nào bên dưới</strong> để mở ngay Slide thuyết trình tương ứng từ <strong>Slide 1 đến Slide 8</strong>!
+                    </p>
+
+                    <div class="flex flex-wrap gap-3 pt-1">
+                        <a href="#muc-luc" class="px-6 py-3.5 rounded-2xl bg-fpt-orange hover:bg-fpt-orangeDark text-white font-semibold shadow-lg shadow-fpt-orange/25 transition-all flex items-center gap-2">
+                            <i class="fa-solid fa-compass"></i> Khám Phá Mục Lục
+                        </a>
+                        <button onclick="goToSlide(1, true)" class="px-6 py-3.5 rounded-2xl bg-fpt-blue hover:bg-blue-700 text-white font-semibold shadow-lg shadow-fpt-blue/25 transition-all flex items-center gap-2 cursor-pointer">
+                            <i class="fa-solid fa-play"></i> Mở Trình Chiếu (Slide 1 → 8)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Bảng chỉ số truy cập nhanh bên phải -->
+                <div class="lg:col-span-5 grid grid-cols-2 gap-4 animate-float">
+                    <div onclick="goToSlide(1, true)" class="cursor-pointer group p-5 rounded-2xl bg-white/85 dark:bg-slate-900/85 border border-fpt-orange/30 hover:border-fpt-orange shadow-md transition-all">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="w-11 h-11 rounded-xl bg-fpt-orange text-white flex items-center justify-center text-lg shadow group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-id-card"></i>
+                            </div>
+                            <span class="text-[11px] font-mono font-bold text-fpt-orange">Slide 01</span>
+                        </div>
+                        <div class="text-xl sm:text-2xl font-extrabold text-fpt-orange">PK04809</div>
+                        <div class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-medium mt-1">Hồ sơ & Lộ trình Kỳ 1</div>
+                    </div>
+
+                    <div onclick="goToSlide(2, true)" class="cursor-pointer group p-5 rounded-2xl bg-white/85 dark:bg-slate-900/85 border border-fpt-blue/30 hover:border-fpt-blue shadow-md transition-all">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="w-11 h-11 rounded-xl bg-fpt-blue text-white flex items-center justify-center text-lg shadow group-hover:scale-110 transition-transform">
+                                <i class="fa-brands fa-github"></i>
+                            </div>
+                            <span class="text-[11px] font-mono font-bold text-fpt-blue dark:text-sky-400">Slide 02</span>
+                        </div>
+                        <div class="text-xl sm:text-2xl font-extrabold text-fpt-blue dark:text-sky-400">Web & Git</div>
+                        <div class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-medium mt-1">GitHub Pages & 404.html</div>
+                    </div>
+
+                    <div onclick="goToSlide(7, true)" class="cursor-pointer group p-5 rounded-2xl bg-white/85 dark:bg-slate-900/85 border border-fpt-green/30 hover:border-fpt-green shadow-md transition-all">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="w-11 h-11 rounded-xl bg-fpt-green text-white flex items-center justify-center text-lg shadow group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-mug-hot"></i>
+                            </div>
+                            <span class="text-[11px] font-mono font-bold text-fpt-green">Slide 07</span>
+                        </div>
+                        <div class="text-xl sm:text-2xl font-extrabold text-fpt-green">Cafe App</div>
+                        <div class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-medium mt-1">Quản lý thực đơn & RBAC</div>
+                    </div>
+
+                    <div onclick="goToSlide(8, true)" class="cursor-pointer group p-5 rounded-2xl bg-white/85 dark:bg-slate-900/85 border border-purple-500/30 hover:border-purple-500 shadow-md transition-all">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="w-11 h-11 rounded-xl bg-purple-600 text-white flex items-center justify-center text-lg shadow group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-microchip"></i>
+                            </div>
+                            <span class="text-[11px] font-mono font-bold text-purple-600 dark:text-purple-400">Slide 08</span>
+                        </div>
+                        <div class="text-xl sm:text-2xl font-extrabold text-purple-600 dark:text-purple-400">PC & Cloud</div>
+                        <div class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-medium mt-1">RTX 3060/4060 & Hosting</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. KHUNG MỤC LỤC TỔNG QUAN (TABLE OF CONTENTS) & TÌM KIẾM NHANH -->
+        <section id="muc-luc" class="reveal scroll-mt-24">
+            <div class="rounded-3xl bg-white dark:bg-fpt-darkCard border border-slate-200 dark:border-slate-800 p-6 sm:p-8 shadow-lg">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-200 dark:border-slate-800">
+                    <div>
+                        <h2 class="text-xl sm:text-2xl font-extrabold flex items-center gap-2.5">
+                            <span class="w-9 h-9 rounded-xl bg-fpt-orange/15 text-fpt-orange flex items-center justify-center text-base">
+                                <i class="fa-solid fa-sitemap"></i>
+                            </span>
+                            Mục Lục Thư Viện Số (Liên Kết Neo Trực Tiếp)
+                        </h2>
+                        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Chọn từng mục lục để cuộn đến chuyên mục tương ứng, hoặc bấm trực tiếp vào thẻ tài liệu để mở Slide.</p>
+                    </div>
+
+                    <!-- Thanh tìm kiếm nhanh học liệu -->
+                    <div class="relative w-full md:w-80">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                        <input type="text" id="vault-search" placeholder="Lọc tài liệu (GitHub, VLOOKUP, RTX, Cafe...)" 
+                               class="w-full pl-10 pr-9 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-fpt-orange transition-all">
+                        <button id="clear-search" aria-label="Xóa tìm kiếm" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-fpt-orange text-xs cursor-pointer">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 5 Thẻ Mục Lục Liên Kết Neo (#gioi-thieu -> #trinh-chieu-slides) -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5 pt-6">
+                    <a href="#gioi-thieu" data-toc="gioi-thieu" class="toc-anchor group p-4 rounded-2xl border border-slate-200 dark:border-slate-700/80 bg-slate-50/80 dark:bg-slate-900/60 hover:border-fpt-orange transition-all flex flex-col justify-between">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-mono font-bold px-2.5 py-0.5 rounded-md bg-fpt-orange/15 text-fpt-orange">#gioi-thieu</span>
+                            <i class="fa-solid fa-arrow-down-right text-slate-400 group-hover:text-fpt-orange transition-colors"></i>
+                        </div>
+                        <h3 class="font-bold text-sm sm:text-base">1. Hồ Sơ & Lộ Trình</h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Sinh viên PK04809 • Slide 01</p>
+                    </a>
+
+                    <a href="#tai-lieu-lap-trinh" data-toc="tai-lieu-lap-trinh" class="toc-anchor group p-4 rounded-2xl border border-slate-200 dark:border-slate-700/80 bg-slate-50/80 dark:bg-slate-900/60 hover:border-fpt-orange transition-all flex flex-col justify-between">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-mono font-bold px-2.5 py-0.5 rounded-md bg-fpt-blue/15 text-fpt-blue dark:text-sky-400">#tai-lieu-lap-trinh</span>
+                            <i class="fa-solid fa-arrow-down-right text-slate-400 group-hover:text-fpt-orange transition-colors"></i>
+                        </div>
+                        <h3 class="font-bold text-sm sm:text-base">2. Lập Trình & Web</h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">HTML/CSS, GitHub • Slide 02</p>
+                    </a>
+
+                    <a href="#tin-hoc-he-thong" data-toc="tin-hoc-he-thong" class="toc-anchor group p-4 rounded-2xl border border-slate-200 dark:border-slate-700/80 bg-slate-50/80 dark:bg-slate-900/60 hover:border-fpt-orange transition-all flex flex-col justify-between">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-mono font-bold px-2.5 py-0.5 rounded-md bg-fpt-green/15 text-fpt-green">#tin-hoc-he-thong</span>
+                            <i class="fa-solid fa-arrow-down-right text-slate-400 group-hover:text-fpt-orange transition-colors"></i>
+                        </div>
+                        <h3 class="font-bold text-sm sm:text-base">3. Tin Học & Hệ Thống</h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Excel, Word, VM • Slide 03–05</p>
+                    </a>
+
+                    <a href="#du-an-ky-nang" data-toc="du-an-ky-nang" class="toc-anchor group p-4 rounded-2xl border border-slate-200 dark:border-slate-700/80 bg-slate-50/80 dark:bg-slate-900/60 hover:border-fpt-orange transition-all flex flex-col justify-between">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-mono font-bold px-2.5 py-0.5 rounded-md bg-purple-500/15 text-purple-600 dark:text-purple-400">#du-an-ky-nang</span>
+                            <i class="fa-solid fa-arrow-down-right text-slate-400 group-hover:text-fpt-orange transition-colors"></i>
+                        </div>
+                        <h3 class="font-bold text-sm sm:text-base">4. Dự Án & Hạ Tầng</h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">PDP102, Cafe, PC • Slide 06–08</p>
+                    </a>
+
+                    <a href="#trinh-chieu-slides" data-toc="trinh-chieu-slides" class="toc-anchor group p-4 rounded-2xl border border-fpt-orange/40 bg-gradient-to-br from-fpt-orange/15 to-fpt-blue/10 hover:border-fpt-orange transition-all flex flex-col justify-between">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-mono font-bold px-2.5 py-0.5 rounded-md bg-fpt-orange text-white">#slide-1 → #slide-8</span>
+                            <i class="fa-solid fa-display text-fpt-orange"></i>
+                        </div>
+                        <h3 class="font-bold text-sm sm:text-base text-fpt-orange">5. Trình Chiếu Slides</h3>
+                        <p class="text-xs text-slate-600 dark:text-slate-300 mt-1">8 Slide tương tác & link chia sẻ</p>
+                    </a>
+                </div>
+
+                <!-- Thanh liên kết nhanh trực tiếp đến từng Slide 1 -> 8 -->
+                <div class="mt-5 pt-4 border-t border-slate-200/70 dark:border-slate-800 flex flex-wrap items-center gap-2">
+                    <span class="text-xs font-mono font-semibold text-slate-500 dark:text-slate-400 mr-1">
+                        <i class="fa-solid fa-bolt text-fpt-orange mr-1"></i>Mở nhanh từng Slide:
+                    </span>
+                    <button onclick="goToSlide(1, true)" class="px-2.5 py-1 rounded-lg text-xs font-mono bg-slate-100 dark:bg-slate-800 hover:bg-fpt-orange hover:text-white transition-colors cursor-pointer">Slide 01</button>
+                    <button onclick="goToSlide(2, true)" class="px-2.5 py-1 rounded-lg text-xs font-mono bg-slate-100 dark:bg-slate-800 hover:bg-fpt-orange hover:text-white transition-colors cursor-pointer">Slide 02</button>
+                    <button onclick="goToSlide(3, true)" class="px-2.5 py-1 rounded-lg text-xs font-mono bg-slate-100 dark:bg-slate-800 hover:bg-fpt-orange hover:text-white transition-colors cursor-pointer">Slide 03</button>
+                    <button onclick="goToSlide(4, true)" class="px-2.5 py-1 rounded-lg text-xs font-mono bg-slate-100 dark:bg-slate-800 hover:bg-fpt-orange hover:text-white transition-colors cursor-pointer">Slide 04</button>
+                    <button onclick="goToSlide(5, true)" class="px-2.5 py-1 rounded-lg text-xs font-mono bg-slate-100 dark:bg-slate-800 hover:bg-fpt-orange hover:text-white transition-colors cursor-pointer">Slide 05</button>
+                    <button onclick="goToSlide(6, true)" class="px-2.5 py-1 rounded-lg text-xs font-mono bg-slate-100 dark:bg-slate-800 hover:bg-fpt-orange hover:text-white transition-colors cursor-pointer">Slide 06</button>
+                    <button onclick="goToSlide(7, true)" class="px-2.5 py-1 rounded-lg text-xs font-mono bg-slate-100 dark:bg-slate-800 hover:bg-fpt-orange hover:text-white transition-colors cursor-pointer">Slide 07</button>
+                    <button onclick="goToSlide(8, true)" class="px-2.5 py-1 rounded-lg text-xs font-mono bg-fpt-orange/15 text-fpt-orange font-bold hover:bg-fpt-orange hover:text-white transition-colors cursor-pointer">Slide 08</button>
+                </div>
+
+                <p id="search-status" class="hidden text-xs font-semibold text-fpt-orange mt-3"></p>
+            </div>
+        </section>
+
+        <!-- 5. MỤC 01: HỒ SƠ & LỘ TRÌNH NĂM NHẤT FPOLY (#gioi-thieu) -->
+        <section id="gioi-thieu" class="spy-target reveal scroll-mt-24 space-y-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <span class="text-xs font-mono font-bold uppercase tracking-wider text-fpt-orange">Mục 01 • #gioi-thieu</span>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold mt-1">Hồ Sơ & Lộ Trình Năm Nhất FPT Polytechnic</h2>
+                </div>
+                <a href="#muc-luc" class="text-xs font-semibold px-3.5 py-2 rounded-xl bg-slate-200/70 dark:bg-slate-800 hover:bg-fpt-orange hover:text-white transition-colors">
+                    <i class="fa-solid fa-arrow-up mr-1"></i> Về Mục lục
+                </a>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Thẻ bài số 1 -> Liên kết trực tiếp tới Slide 01 -->
+                <article data-slide="1" data-tags="ho so sinh vien nguyen dinh dang nhan pk04809 fpt polytechnic tay nguyen thuc hoc thuc nghiep" 
+                         class="doc-card library-card card-tilt cursor-pointer lg:col-span-8 rounded-3xl bg-white dark:bg-fpt-darkCard border border-slate-200 dark:border-slate-800 p-6 sm:p-8 shadow-md flex flex-col justify-between space-y-5">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between gap-3">
+                            <div class="flex items-center gap-3.5">
+                                <div class="w-12 h-12 rounded-2xl bg-fpt-orange/15 text-fpt-orange flex items-center justify-center text-xl">
+                                    <i class="fa-solid fa-user-graduate"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-lg sm:text-xl">Hành Trang Sinh Viên IT — Nguyễn Đình Đăng Nhân (PK04809)</h3>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400">Trường Cao đẳng FPT Polytechnic • Cơ sở Tây Nguyên</p>
+                                </div>
+                            </div>
+                            <span class="shrink-0 px-3 py-1 rounded-full bg-fpt-orange text-white font-mono text-xs font-bold shadow">
+                                Slide 01 <i class="fa-solid fa-arrow-up-right-from-square ml-1 text-[10px]"></i>
+                            </span>
+                        </div>
+
+                        <p class="text-slate-600 dark:text-slate-300 leading-relaxed text-sm sm:text-base">
+                            Bắt đầu hành trình tại <strong>FPT Polytechnic Tây Nguyên</strong> với triết lý đào tạo <em>"Thực học - Thực nghiệp"</em>, thư viện số này lưu giữ toàn bộ dấu ấn học tập kỳ 1: từ tư duy lập trình Web, quản lý mã nguồn trên GitHub đến ứng dụng tin học văn phòng và các dự án sáng tạo thực tế.
+                        </p>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-1">
+                            <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800">
+                                <div class="text-fpt-orange font-bold text-sm mb-1.5"><i class="fa-solid fa-bolt mr-1.5"></i>Blended Learning</div>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">Tự nghiên cứu học liệu số trước giờ lên lớp để tối ưu thời gian thực hành Lab cùng giảng viên.</p>
+                            </div>
+                            <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800">
+                                <div class="text-fpt-blue dark:text-sky-400 font-bold text-sm mb-1.5"><i class="fa-solid fa-diagram-project mr-1.5"></i>Project-Based</div>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">Học đi đôi với làm sản phẩm thực tế qua từng môn học và Assignment cuối kỳ.</p>
+                            </div>
+                            <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800">
+                                <div class="text-fpt-green font-bold text-sm mb-1.5"><i class="fa-solid fa-bullseye mr-1.5"></i>Mục Tiêu Nền Tảng</div>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">Xây dựng nền móng vững chắc về Web, Hệ điều hành và tư duy giải quyết vấn đề.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-semibold text-fpt-orange">
+                        <span><i class="fa-solid fa-hand-pointer mr-1.5"></i>Bấm vào thẻ này để mở Slide 01</span>
+                        <span class="font-mono">#slide-1</span>
+                    </div>
+                </article>
+
+                <!-- Thẻ Identity Card Sinh viên IT -->
+                <div class="lg:col-span-4 rounded-3xl bg-gradient-to-br from-fpt-blue via-[#003d7a] to-slate-900 text-white p-6 sm:p-8 shadow-lg flex flex-col justify-between relative overflow-hidden">
+                    <div class="absolute -right-6 -bottom-6 text-white/10 text-8xl pointer-events-none">
+                        <i class="fa-solid fa-microchip"></i>
+                    </div>
+                    <div class="space-y-4 relative z-10">
+                        <div class="flex items-center justify-between">
+                            <span class="px-3 py-1 rounded-full bg-white/15 text-xs font-mono font-semibold">MSSV: PK04809</span>
+                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+                        </div>
+                        <h3 class="text-xl font-extrabold">Nguyễn Đình Đăng Nhân</h3>
+                        <ul class="space-y-3 text-sm text-slate-200">
+                            <li class="flex items-center gap-2.5"><i class="fa-solid fa-graduation-cap text-fpt-orange w-4"></i> Sinh viên Năm nhất • Ngành CNTT</li>
+                            <li class="flex items-center gap-2.5"><i class="fa-solid fa-location-dot text-fpt-orange w-4"></i> FPT Polytechnic Tây Nguyên</li>
+                            <li class="flex items-center gap-2.5"><i class="fa-brands fa-github text-fpt-orange w-4"></i> Kho lưu trữ: GitHub Pages Vault</li>
+                            <li class="flex items-center gap-2.5"><i class="fa-solid fa-layer-group text-fpt-orange w-4"></i> Tổng hợp 8 Chuyên đề & 8 Slides</li>
+                        </ul>
+                    </div>
+                    <div class="pt-6 relative z-10">
+                        <button onclick="goToSlide(1, true)" class="w-full py-3 px-4 rounded-xl bg-fpt-orange hover:bg-fpt-orangeDark text-white text-sm font-bold flex items-center justify-center gap-2 shadow-lg transition-colors cursor-pointer">
+                            <span>Xem Slide 01: Hồ Sơ Sinh Viên</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. MỤC 02: LẬP TRÌNH WEB, GIT & GITHUB PAGES (#tai-lieu-lap-trinh) -->
+        <section id="tai-lieu-lap-trinh" class="spy-target reveal scroll-mt-24 space-y-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <span class="text-xs font-mono font-bold uppercase tracking-wider text-fpt-blue dark:text-sky-400">Mục 02 • #tai-lieu-lap-trinh</span>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold mt-1">Lập Trình Web, Git & Triển Khai GitHub Pages</h2>
+                </div>
+                <a href="#muc-luc" class="text-xs font-semibold px-3.5 py-2 rounded-xl bg-slate-200/70 dark:bg-slate-800 hover:bg-fpt-orange hover:text-white transition-colors">
+                    <i class="fa-solid fa-arrow-up mr-1"></i> Về Mục lục
+                </a>
+            </div>
+
+            <!-- Thẻ bài số 2 -> Liên kết trực tiếp tới Slide 02 -->
+            <article data-slide="2" data-tags="lap trinh web html5 css3 javascript git github pages index.html 404.html deploy" 
+                     class="doc-card library-card card-tilt cursor-pointer rounded-3xl bg-white dark:bg-fpt-darkCard border border-slate-200 dark:border-slate-800 p-6 sm:p-8 shadow-md">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                    <div class="lg:col-span-7 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="inline-flex items-center gap-2 text-xs font-mono font-bold px-3 py-1 rounded-full bg-fpt-blue/15 text-fpt-blue dark:text-sky-400">
+                                <i class="fa-brands fa-html5"></i> WEB1013 & GIT WORKFLOW
+                            </span>
+                            <span class="px-3 py-1 rounded-full bg-fpt-orange text-white font-mono text-xs font-bold shadow">
+                                Slide 02 <i class="fa-solid fa-arrow-up-right-from-square ml-1 text-[10px]"></i>
+                            </span>
+                        </div>
+                        <h3 class="text-xl sm:text-2xl font-extrabold">Xây Dựng Website Chuẩn HTML5/CSS3/JS & Xuất Bản GitHub Pages</h3>
+                        <p class="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed">
+                            Thiết kế cấu trúc trang web ngữ nghĩa hiện đại, kết hợp hệ thống quản lý phiên bản Git để đóng gói và triển khai dự án trực tuyến lên <strong>GitHub Pages</strong>, bao gồm trang chủ <code class="text-fpt-orange">index.html</code> và trang điều hướng lỗi tùy chỉnh <code class="text-fpt-orange">404.html</code>.
+                        </p>
+                        <div class="flex items-center justify-between pt-2 text-xs font-semibold text-fpt-orange">
+                            <span><i class="fa-solid fa-hand-pointer mr-1.5"></i>Bấm vào thẻ này để mở Slide 02</span>
+                            <span class="font-mono">#slide-2</span>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-5 rounded-2xl bg-slate-950 border border-slate-800 p-5 font-mono text-xs text-slate-300 space-y-2 shadow-inner">
+                        <div class="flex items-center justify-between text-slate-500 pb-2 border-b border-slate-800">
+                            <span>Cấu trúc Repository GitHub Pages</span>
+                            <span class="text-emerald-400">● Live</span>
+                        </div>
+                        <div>📁 <span class="text-sky-400">Thu-vien-so-3/</span></div>
+                        <div class="pl-4">├── 📄 <span class="text-fpt-orange font-bold">index.html</span> <span class="text-slate-500">// Trang chủ thư viện</span></div>
+                        <div class="pl-4">├── 📄 <span class="text-amber-400 font-bold">404.html</span> <span class="text-slate-500">// Trang báo lỗi tùy chỉnh</span></div>
+                        <div class="pl-4">└── 📄 <span class="text-slate-400">README.md</span> <span class="text-slate-500">// Tài liệu dự án</span></div>
+                    </div>
+                </div>
+            </article>
+        </section>
+
+        <!-- 7. MỤC 03: TIN HỌC VĂN PHÒNG & ẢO HÓA HỆ THỐNG (#tin-hoc-he-thong) -->
+        <section id="tin-hoc-he-thong" class="spy-target reveal scroll-mt-24 space-y-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <span class="text-xs font-mono font-bold uppercase tracking-wider text-fpt-green">Mục 03 • #tin-hoc-he-thong</span>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold mt-1">Tin Học Văn Phòng & Ảo Hóa Hệ Thống</h2>
+                </div>
+                <a href="#muc-luc" class="text-xs font-semibold px-3.5 py-2 rounded-xl bg-slate-200/70 dark:bg-slate-800 hover:bg-fpt-orange hover:text-white transition-colors">
+                    <i class="fa-solid fa-arrow-up mr-1"></i> Về Mục lục
+                </a>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Thẻ bài số 3 -> Liên kết trực tiếp tới Slide 03 -->
+                <article data-slide="3" data-tags="excel nang cao vlookup index match if and countif xu ly du lieu bang tinh com1071" 
+                         class="doc-card library-card card-tilt cursor-pointer rounded-3xl bg-white dark:bg-fpt-darkCard border border-slate-200 dark:border-slate-800 p-6 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="w-12 h-12 rounded-2xl bg-emerald-500/15 text-emerald-500 flex items-center justify-center text-2xl">
+                                <i class="fa-solid fa-file-excel"></i>
+                            </span>
+                            <span class="px-3 py-1 rounded-full bg-fpt-orange text-white font-mono text-xs font-bold shadow">
+                                Slide 03 <i class="fa-solid fa-arrow-up-right-from-square ml-1 text-[10px]"></i>
+                            </span>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2">Excel Nâng Cao & Tư Duy Xử Lý Dữ Liệu</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
+                            Thực hành tự động hóa bảng tính quản lý bằng các hàm tra cứu & điều kiện trọng tâm: <code class="text-emerald-500">VLOOKUP</code>, <code class="text-emerald-500">INDEX/MATCH</code>, <code class="text-emerald-500">IF/AND</code> và thống kê <code class="text-emerald-500">COUNTIF</code>.
+                        </p>
+                    </div>
+                    <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-semibold text-fpt-orange">
+                        <span><i class="fa-solid fa-hand-pointer mr-1"></i>Mở Slide 03</span>
+                        <span class="font-mono text-slate-400">#slide-3</span>
+                    </div>
+                </article>
+
+                <!-- Thẻ bài số 4 -> Liên kết trực tiếp tới Slide 04 -->
+                <article data-slide="4" data-tags="word soan thao van ban hanh chinh bao cao gioi thieu ban than mon hoc" 
+                         class="doc-card library-card card-tilt cursor-pointer rounded-3xl bg-white dark:bg-fpt-darkCard border border-slate-200 dark:border-slate-800 p-6 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="w-12 h-12 rounded-2xl bg-blue-500/15 text-blue-500 flex items-center justify-center text-2xl">
+                                <i class="fa-solid fa-file-word"></i>
+                            </span>
+                            <span class="px-3 py-1 rounded-full bg-fpt-orange text-white font-mono text-xs font-bold shadow">
+                                Slide 04 <i class="fa-solid fa-arrow-up-right-from-square ml-1 text-[10px]"></i>
+                            </span>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2">Soạn Thảo Văn Bản Hành Chính & Báo Cáo</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
+                            Chuẩn hóa thể thức văn bản hành chính trên Microsoft Word qua chuỗi bài thực hành: <em>Giới thiệu bản thân</em>, <em>Giới thiệu môn học</em> và <em>Báo cáo văn bản hành chính</em>.
+                        </p>
+                    </div>
+                    <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-semibold text-fpt-orange">
+                        <span><i class="fa-solid fa-hand-pointer mr-1"></i>Mở Slide 04</span>
+                        <span class="font-mono text-slate-400">#slide-4</span>
+                    </div>
+                </article>
+
+                <!-- Thẻ bài số 5 -> Liên kết trực tiếp tới Slide 05 -->
+                <article data-slide="5" data-tags="virtualbox ao hoa he thong may ao windows 10 he dieu hanh snapshot nat" 
+                         class="doc-card library-card card-tilt cursor-pointer rounded-3xl bg-white dark:bg-fpt-darkCard border border-slate-200 dark:border-slate-800 p-6 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="w-12 h-12 rounded-2xl bg-indigo-500/15 text-indigo-500 flex items-center justify-center text-2xl">
+                                <i class="fa-brands fa-windows"></i>
+                            </span>
+                            <span class="px-3 py-1 rounded-full bg-fpt-orange text-white font-mono text-xs font-bold shadow">
+                                Slide 05 <i class="fa-solid fa-arrow-up-right-from-square ml-1 text-[10px]"></i>
+                            </span>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2">Ảo Hóa Hệ Thống Với VirtualBox</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
+                            Thiết lập môi trường Lab cô lập an toàn trên Oracle VM VirtualBox, phân bổ RAM/CPU/ổ đĩa VDI và cài đặt, vận hành hệ điều hành Windows 10 mượt mà.
+                        </p>
+                    </div>
+                    <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-semibold text-fpt-orange">
+                        <span><i class="fa-solid fa-hand-pointer mr-1"></i>Mở Slide 05</span>
+                        <span class="font-mono text-slate-400">#slide-5</span>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- 8. MỤC 04: DỰ ÁN THỰC TẾ, KỸ NĂNG MỀM & HẠ TẦNG CÔNG NGHỆ (#du-an-ky-nang) -->
+        <section id="du-an-ky-nang" class="spy-target reveal scroll-mt-24 space-y-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <span class="text-xs font-mono font-bold uppercase tracking-wider text-purple-600 dark:text-purple-400">Mục 04 • #du-an-ky-nang</span>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold mt-1">Dự Án Thực Tế, Kỹ Năng Mềm & Hạ Tầng Công Nghệ</h2>
+                </div>
+                <a href="#muc-luc" class="text-xs font-semibold px-3.5 py-2 rounded-xl bg-slate-200/70 dark:bg-slate-800 hover:bg-fpt-orange hover:text-white transition-colors">
+                    <i class="fa-solid fa-arrow-up mr-1"></i> Về Mục lục
+                </a>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Thẻ bài số 6 -> Liên kết trực tiếp tới Slide 06 -->
+                <article data-slide="6" data-tags="pdp102 bua com 30k bo phim cuoc doi canva ai young guru ky nang mem" 
+                         class="doc-card library-card card-tilt cursor-pointer rounded-3xl bg-white dark:bg-fpt-darkCard border border-slate-200 dark:border-slate-800 p-6 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="w-12 h-12 rounded-2xl bg-purple-500/15 text-purple-500 flex items-center justify-center text-2xl">
+                                <i class="fa-solid fa-film"></i>
+                            </span>
+                            <span class="px-3 py-1 rounded-full bg-fpt-orange text-white font-mono text-xs font-bold shadow">
+                                Slide 06 <i class="fa-solid fa-arrow-up-right-from-square ml-1 text-[10px]"></i>
+                            </span>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2">Dự Án Thực Tế & Kỹ Năng Mềm (PDP102)</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
+                            Dấu ấn làm việc nhóm và sáng tạo nội dung qua video cộng đồng <strong>"Bữa cơm 30k"</strong>, bài thuyết trình Canva <strong>"Bộ phim cuộc đời"</strong> và sân chơi công nghệ <strong>AI Young Guru</strong>.
+                        </p>
+                    </div>
+                    <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-semibold text-fpt-orange">
+                        <span><i class="fa-solid fa-hand-pointer mr-1"></i>Mở Slide 06</span>
+                        <span class="font-mono text-slate-400">#slide-6</span>
+                    </div>
+                </article>
+
+                <!-- Thẻ bài số 7 -> Liên kết trực tiếp tới Slide 07 -->
+                <article data-slide="7" data-tags="quan ly quan ca phe thuc don do uong banh ngot don hang camera phan quyen rbac" 
+                         class="doc-card library-card card-tilt cursor-pointer rounded-3xl bg-white dark:bg-fpt-darkCard border border-slate-200 dark:border-slate-800 p-6 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="w-12 h-12 rounded-2xl bg-amber-500/15 text-amber-500 flex items-center justify-center text-2xl">
+                                <i class="fa-solid fa-mug-hot"></i>
+                            </span>
+                            <span class="px-3 py-1 rounded-full bg-fpt-orange text-white font-mono text-xs font-bold shadow">
+                                Slide 07 <i class="fa-solid fa-arrow-up-right-from-square ml-1 text-[10px]"></i>
+                            </span>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2">Dự Án Web Quản Lý Quán Cà Phê</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
+                            Thiết kế kiến trúc giao diện ứng dụng quản lý thực đơn đồ uống & bánh ngọt, theo dõi tiến độ đơn hàng, giám sát camera và hệ thống phân quyền người dùng (Admin / Thu ngân / Pha chế).
+                        </p>
+                    </div>
+                    <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-semibold text-fpt-orange">
+                        <span><i class="fa-solid fa-hand-pointer mr-1"></i>Mở Slide 07</span>
+                        <span class="font-mono text-slate-400">#slide-7</span>
+                    </div>
+                </article>
+
+                <!-- Thẻ bài số 8 -> Liên kết trực tiếp tới Slide 08 -->
+                <article data-slide="8" data-tags="tong ket ky 1 cau hinh pc rtx 3060 12gb rtx 4060 ten mien hosting ha tang" 
+                         class="doc-card library-card card-tilt cursor-pointer rounded-3xl bg-white dark:bg-fpt-darkCard border border-slate-200 dark:border-slate-800 p-6 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="w-12 h-12 rounded-2xl bg-rose-500/15 text-rose-500 flex items-center justify-center text-2xl">
+                                <i class="fa-solid fa-server"></i>
+                            </span>
+                            <span class="px-3 py-1 rounded-full bg-fpt-orange text-white font-mono text-xs font-bold shadow">
+                                Slide 08 <i class="fa-solid fa-arrow-up-right-from-square ml-1 text-[10px]"></i>
+                            </span>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2">Tổng Kết Kỳ 1 & Định Hướng Hạ Tầng</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
+                            Đánh giá năng lực kỳ đầu, phân tích tối ưu phần cứng PC học tập/đồ họa (so sánh <strong>RTX 3060 12GB</strong> vs <strong>RTX 4060</strong>) và lộ trình triển khai tên miền & hosting thực tế.
+                        </p>
+                    </div>
+                    <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-semibold text-fpt-orange">
+                        <span><i class="fa-solid fa-hand-pointer mr-1"></i>Mở Slide 08</span>
+                        <span class="font-mono text-slate-400">#slide-8</span>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- 9. MỤC 05: TRÌNH CHIẾU TƯƠNG TÁC TỪ SLIDE 1 ĐẾN SLIDE 8 (#trinh-chieu-slides) -->
+        <section id="trinh-chieu-slides" class="spy-target reveal scroll-mt-24 space-y-6">
+            <!-- Các điểm neo ID tĩnh hỗ trợ trực tiếp link URL #slide-1 đến #slide-8 -->
+            <div id="slide-1" class="sr-only">Slide 1</div>
+            <div id="slide-2" class="sr-only">Slide 2</div>
+            <div id="slide-3" class="sr-only">Slide 3</div>
+            <div id="slide-4" class="sr-only">Slide 4</div>
+            <div id="slide-5" class="sr-only">Slide 5</div>
+            <div id="slide-6" class="sr-only">Slide 6</div>
+            <div id="slide-7" class="sr-only">Slide 7</div>
+            <div id="slide-8" class="sr-only">Slide 8</div>
+
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                    <span class="text-xs font-mono font-bold uppercase tracking-wider text-fpt-orange">Mục 05 • #trinh-chieu-slides (#slide-1 → #slide-8)</span>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold mt-1">Trình Chiếu Tương Tác: Slide 1 Đến Slide 8</h2>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button id="copy-slide-link" class="text-xs font-semibold px-3.5 py-2 rounded-xl bg-fpt-blue/15 text-fpt-blue dark:text-sky-400 hover:bg-fpt-blue hover:text-white transition-colors cursor-pointer">
+                        <i class="fa-solid fa-share-nodes mr-1"></i> <span id="copy-link-text">Sao chép link Slide</span>
+                    </button>
+                    <a href="#muc-luc" class="text-xs font-semibold px-3.5 py-2 rounded-xl bg-slate-200/70 dark:bg-slate-800 hover:bg-fpt-orange hover:text-white transition-colors">
+                        <i class="fa-solid fa-arrow-up mr-1"></i> Về Mục lục
+                    </a>
+                </div>
+            </div>
+
+            <!-- KHUNG TRÌNH CHIẾU SLIDE DECK -->
+            <div id="slide-deck-wrapper" class="rounded-3xl bg-slate-900 text-white border border-slate-700/80 shadow-2xl overflow-hidden flex flex-col">
+                
+                <!-- Thanh tiêu đề của trình chiếu -->
+                <div class="bg-slate-950/95 px-4 sm:px-6 py-3.5 border-b border-slate-800 flex flex-wrap items-center justify-between gap-3">
+                    <div class="flex items-center gap-2">
+                        <span class="w-3 h-3 rounded-full bg-rose-500"></span>
+                        <span class="w-3 h-3 rounded-full bg-amber-400"></span>
+                        <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+                        <span class="ml-2 font-mono text-xs sm:text-sm text-slate-400">PK04809_NguyenDinhDangNhan_Slides.deck</span>
+                    </div>
+
+                    <div class="flex items-center gap-3">
+                        <span id="slide-badge-counter" class="px-3 py-1 rounded-full bg-fpt-orange/20 border border-fpt-orange/40 text-fpt-orange font-mono text-xs sm:text-sm font-bold">
+                            Slide 1 / 8
+                        </span>
+                        <button id="fullscreen-toggle" title="Xem toàn màn hình" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium flex items-center gap-1.5 transition-colors cursor-pointer">
+                            <i id="fullscreen-icon" class="fa-solid fa-expand"></i>
+                            <span class="hidden sm:inline">Toàn màn hình</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Thanh tiến trình của 8 Slide -->
+                <div class="w-full h-1 bg-slate-800">
+                    <div id="slide-progress" class="h-full bg-gradient-to-r from-fpt-orange to-fpt-blue transition-all duration-300" style="width: 12.5%;"></div>
+                </div>
+
+                <!-- SÂN KHẤU HIỂN THỊ NỘI DUNG 8 SLIDE -->
+                <div class="slide-stage relative min-h-[460px] sm:min-h-[500px] p-6 sm:p-10 lg:p-14 flex items-center justify-center bg-gradient-to-br from-slate-900 via-[#0f172a] to-[#081226]">
+                    
+                    <!-- SLIDE 1: Hồ sơ Sinh viên IT Năm nhất FPT Polytechnic Tây Nguyên -->
+                    <div class="slide-panel active w-full max-w-4xl flex-col items-center text-center space-y-6" data-slide-index="1">
+                        <span class="px-4 py-1.5 rounded-full bg-fpt-orange/20 border border-fpt-orange/40 text-fpt-orange text-xs sm:text-sm font-mono font-bold">
+                            SLIDE 01 • HỒ SƠ SINH VIÊN IT NĂM NHẤT
+                        </span>
+                        <h3 class="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">
+                            Nguyễn Đình Đăng Nhân <br>
+                            <span class="text-fpt-orange">FPT Polytechnic Tây Nguyên</span>
+                        </h3>
+                        <p class="text-slate-300 text-base sm:text-lg max-w-2xl leading-relaxed">
+                            Mã số sinh viên <strong>PK04809</strong> • Chuyên ngành Công nghệ thông tin. Áp dụng triết lý <strong>"Thực học - Thực nghiệp"</strong> và mô hình Blended Learning để xây dựng nền tảng kỹ năng số vững chắc ngay từ kỳ 1.
+                        </p>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2 w-full max-w-2xl">
+                            <div class="p-4 rounded-2xl bg-white/5 border border-white/10">
+                                <div class="text-fpt-orange font-extrabold text-lg">Tư Duy Thực Chiến</div>
+                                <div class="text-xs text-slate-400 mt-1">Chủ động nghiên cứu LMS & thực hành Lab</div>
+                            </div>
+                            <div class="p-4 rounded-2xl bg-white/5 border border-white/10">
+                                <div class="text-sky-400 font-extrabold text-lg">Lộ Trình Kỳ 1</div>
+                                <div class="text-xs text-slate-400 mt-1">Web, Tin học văn phòng, Ảo hóa & PDP102</div>
+                            </div>
+                            <div class="p-4 rounded-2xl bg-white/5 border border-white/10">
+                                <div class="text-emerald-400 font-extrabold text-lg">Mục Tiêu Nền Tảng</div>
+                                <div class="text-xs text-slate-400 mt-1">Tích lũy Portfolio cá nhân trên GitHub</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SLIDE 2: Lập trình Web & Triển khai GitHub Pages -->
+                    <div class="slide-panel w-full max-w-4xl flex-col space-y-6" data-slide-index="2">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                            <div>
+                                <span class="text-xs font-mono text-sky-400 font-bold">SLIDE 02 • WEB DEVELOPMENT & GITHUB PAGES</span>
+                                <h3 class="text-2xl sm:text-3xl font-extrabold mt-1">Lập Trình Web & Triển Khai GitHub Pages</h3>
+                            </div>
+                            <i class="fa-brands fa-github text-3xl text-sky-400"></i>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-12 gap-5 items-center">
+                            <div class="md:col-span-6 space-y-3 text-sm text-slate-300">
+                                <div class="p-4 rounded-2xl bg-white/5 border border-white/10">
+                                    <strong class="text-fpt-orange block mb-1">1. Kiến trúc HTML5 / CSS3 / JS Chuẩn:</strong>
+                                    Tổ chức giao diện ngữ nghĩa, tối ưu hiển thị đa thiết bị (Responsive) và tích hợp chế độ Sáng/Tối mượt mà.
+                                </div>
+                                <div class="p-4 rounded-2xl bg-white/5 border border-white/10">
+                                    <strong class="text-sky-400 block mb-1">2. Cấu hình Trang chủ & Trang lỗi 404.html:</strong>
+                                    Quản lý lịch sử commit qua Git, xuất bản trang chủ <code>index.html</code> kèm trang báo lỗi tùy chỉnh <code>404.html</code> trên GitHub Pages.
+                                </div>
+                            </div>
+                            <div class="md:col-span-6 p-5 rounded-2xl bg-slate-950 border border-slate-800 font-mono text-xs text-slate-300 space-y-2">
+                                <div class="text-slate-500"># Quy trình xuất bản lên GitHub Pages</div>
+                                <div><span class="text-emerald-400">$</span> git init && git add index.html 404.html</div>
+                                <div><span class="text-emerald-400">$</span> git commit -m "Deploy Thu vien so PK04809"</div>
+                                <div><span class="text-emerald-400">$</span> git push -u origin main</div>
+                                <div class="pt-2 border-t border-slate-800 text-fpt-orange">
+                                    ✔ URL: nguyendinhdangnhan9a7-cell.github.io/Thu-vien-so-3/
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SLIDE 3: Tin học Văn phòng & Excel Nâng cao -->
+                    <div class="slide-panel w-full max-w-4xl flex-col space-y-6" data-slide-index="3">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                            <div>
+                                <span class="text-xs font-mono text-emerald-400 font-bold">SLIDE 03 • EXCEL DATA PROCESSING</span>
+                                <h3 class="text-2xl sm:text-3xl font-extrabold mt-1">Tin Học Văn Phòng & Excel Nâng Cao</h3>
+                            </div>
+                            <i class="fa-solid fa-file-excel text-3xl text-emerald-400"></i>
+                        </div>
+                        <p class="text-sm text-slate-300">Rèn luyện tư duy xử lý bảng dữ liệu quy mô lớn và tự động hóa báo cáo bằng hệ thống hàm thực chiến:</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 font-mono text-xs">
+                            <div class="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30">
+                                <div class="text-emerald-400 font-bold text-sm mb-1">1. Hàm Tra Cứu VLOOKUP</div>
+                                <code class="text-slate-200">=VLOOKUP(Trị_dò, Bảng_dò, Cột_trả_về, 0)</code>
+                                <p class="font-sans text-slate-400 mt-1.5">Truy xuất nhanh đơn giá, tên sản phẩm và xếp loại từ bảng danh mục chuẩn.</p>
+                            </div>
+                            <div class="p-4 rounded-2xl bg-sky-500/10 border border-sky-500/30">
+                                <div class="text-sky-400 font-bold text-sm mb-1">2. Kết Hợp INDEX / MATCH</div>
+                                <code class="text-slate-200">=INDEX(Vùng_KQ, MATCH(Trị_dò, Vùng_dò, 0))</code>
+                                <p class="font-sans text-slate-400 mt-1.5">Tra cứu linh hoạt hai chiều, khắc phục giới hạn cột khóa bên trái của VLOOKUP.</p>
+                            </div>
+                            <div class="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30">
+                                <div class="text-amber-400 font-bold text-sm mb-1">3. Hàm Điều Kiện Phức Hợp IF / AND</div>
+                                <code class="text-slate-200">=IF(AND(ĐTB>=8, RL>=80), "Ong Vàng", "Đạt")</code>
+                                <p class="font-sans text-slate-400 mt-1.5">Xét duyệt đa điều kiện đồng thời trong bài toán tính thưởng và đánh giá học lực.</p>
+                            </div>
+                            <div class="p-4 rounded-2xl bg-purple-500/10 border border-purple-500/30">
+                                <div class="text-purple-400 font-bold text-sm mb-1">4. Thống Kê Có Điều Kiện COUNTIF</div>
+                                <code class="text-slate-200">=COUNTIF(Vùng_điều_kiện, "&gt;=8.0")</code>
+                                <p class="font-sans text-slate-400 mt-1.5">Đếm nhanh số lượng bản ghi đạt tiêu chuẩn để tổng hợp biểu đồ báo cáo.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SLIDE 4: Soạn thảo Văn bản Hành chính & Báo cáo Học phần -->
+                    <div class="slide-panel w-full max-w-4xl flex-col space-y-6" data-slide-index="4">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                            <div>
+                                <span class="text-xs font-mono text-blue-400 font-bold">SLIDE 04 • ADMINISTRATIVE DOCUMENTS & REPORTS</span>
+                                <h3 class="text-2xl sm:text-3xl font-extrabold mt-1">Soạn Thảo Văn Bản Hành Chính & Báo Cáo Học Phần</h3>
+                            </div>
+                            <i class="fa-solid fa-file-word text-3xl text-blue-400"></i>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="p-5 rounded-2xl bg-blue-500/10 border border-blue-500/30 space-y-2">
+                                <span class="text-xs font-mono text-blue-400 font-bold">BÁO CÁO 01</span>
+                                <h4 class="font-bold text-white text-base">Giới Thiệu Bản Thân</h4>
+                                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                                    Ứng dụng hệ thống Heading Styles, chèn SmartArt, định dạng bố cục hai cột và căn chỉnh lề chuẩn cho hồ sơ cá nhân.
+                                </p>
+                            </div>
+                            <div class="p-5 rounded-2xl bg-blue-500/10 border border-blue-500/30 space-y-2">
+                                <span class="text-xs font-mono text-blue-400 font-bold">BÁO CÁO 02</span>
+                                <h4 class="font-bold text-white text-base">Giới Thiệu Môn Học</h4>
+                                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                                    Tạo Mục lục tự động (Table of Contents), ngắt Section Break tách trang bìa và đánh số trang chuyên nghiệp từ phần nội dung.
+                                </p>
+                            </div>
+                            <div class="p-5 rounded-2xl bg-blue-500/10 border border-blue-500/30 space-y-2">
+                                <span class="text-xs font-mono text-blue-400 font-bold">BÁO CÁO 03</span>
+                                <h4 class="font-bold text-white text-base">Văn Bản Hành Chính</h4>
+                                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                                    Chuẩn hóa Quốc hiệu, Tiêu ngữ, thể thức trình bày công văn/tờ trình đúng quy chuẩn hành chính và sử dụng trộn thư Mail Merge.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SLIDE 5: Ảo hóa Hệ thống với VirtualBox -->
+                    <div class="slide-panel w-full max-w-4xl flex-col space-y-6" data-slide-index="5">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                            <div>
+                                <span class="text-xs font-mono text-indigo-400 font-bold">SLIDE 05 • VIRTUALIZATION LAB</span>
+                                <h3 class="text-2xl sm:text-3xl font-extrabold mt-1">Ảo Hóa Hệ Thống Với Oracle VM VirtualBox</h3>
+                            </div>
+                            <i class="fa-brands fa-windows text-3xl text-indigo-400"></i>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <div class="p-5 rounded-2xl bg-indigo-500/10 border border-indigo-500/30 space-y-2">
+                                <div class="font-bold text-indigo-300 text-base"><i class="fa-solid fa-sliders mr-2"></i>Phân Bổ Tài Nguyên</div>
+                                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                                    Thiết lập thông số tối ưu cho máy ảo Windows 10: 4GB RAM, 2 nhân CPU, ổ đĩa ảo VDI 40GB giúp máy chủ và máy khách vận hành ổn định.
+                                </p>
+                            </div>
+                            <div class="p-5 rounded-2xl bg-indigo-500/10 border border-indigo-500/30 space-y-2">
+                                <div class="font-bold text-indigo-300 text-base"><i class="fa-solid fa-compact-disc mr-2"></i>Cài Đặt Windows 10</div>
+                                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                                    Mount file ảnh ISO, phân vùng ổ đĩa cài đặt Windows 10 sạch và tích hợp VirtualBox Guest Additions để chia sẻ thư mục & toàn màn hình.
+                                </p>
+                            </div>
+                            <div class="p-5 rounded-2xl bg-indigo-500/10 border border-indigo-500/30 space-y-2">
+                                <div class="font-bold text-indigo-300 text-base"><i class="fa-solid fa-shield-halved mr-2"></i>Môi Trường An Toàn</div>
+                                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                                    Sử dụng tính năng Snapshot lưu điểm khôi phục hệ thống trước khi thử nghiệm cấu hình mạng NAT/Bridged hoặc phần mềm mới.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SLIDE 6: Dự án Thực tế & Kỹ năng Mềm (PDP102) -->
+                    <div class="slide-panel w-full max-w-4xl flex-col space-y-6" data-slide-index="6">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                            <div>
+                                <span class="text-xs font-mono text-purple-400 font-bold">SLIDE 06 • PDP102 & AI CREATIVITY</span>
+                                <h3 class="text-2xl sm:text-3xl font-extrabold mt-1">Dự Án Thực Tế & Kỹ Năng Mềm (PDP102)</h3>
+                            </div>
+                            <i class="fa-solid fa-people-group text-3xl text-purple-400"></i>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <div class="p-5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 space-y-2">
+                                <span class="text-xs font-mono text-emerald-400 font-bold">VIDEO CỘNG ĐỒNG</span>
+                                <h4 class="font-bold text-white text-base">"Bữa Cơm 30k"</h4>
+                                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                                    Lập kế hoạch ngân sách 30.000đ/suất ăn dinh dưỡng cho sinh viên, phân công quay dựng video và lan tỏa tinh thần sẻ chia cộng đồng.
+                                </p>
+                            </div>
+                            <div class="p-5 rounded-2xl bg-purple-500/10 border border-purple-500/30 space-y-2">
+                                <span class="text-xs font-mono text-purple-400 font-bold">THUYẾT TRÌNH CANVA</span>
+                                <h4 class="font-bold text-white text-base">"Bộ Phim Cuộc Đời"</h4>
+                                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                                    Thiết kế slide trực quan trên Canva, xây dựng kịch bản kể chuyện (Storytelling) định vị bản thân và lộ trình nghề nghiệp IT.
+                                </p>
+                            </div>
+                            <div class="p-5 rounded-2xl bg-fpt-orange/10 border border-fpt-orange/30 space-y-2">
+                                <span class="text-xs font-mono text-fpt-orange font-bold">ĐẤU TRƯỜNG CÔNG NGHỆ</span>
+                                <h4 class="font-bold text-white text-base">AI Young Guru</h4>
+                                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                                    Ứng dụng Trí tuệ nhân tạo tạo sinh và kỹ thuật viết Prompt tối ưu để giải quyết bài toán học tập và sáng tạo nội dung số.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SLIDE 7: Dự án Web Quản lý Quán Cà Phê -->
+                    <div class="slide-panel w-full max-w-4xl flex-col space-y-6" data-slide-index="7">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                            <div>
+                                <span class="text-xs font-mono text-amber-400 font-bold">SLIDE 07 • COFFEE SHOP MANAGEMENT SYSTEM</span>
+                                <h3 class="text-2xl sm:text-3xl font-extrabold mt-1">Dự Án Web Quản Lý Quán Cà Phê</h3>
+                            </div>
+                            <i class="fa-solid fa-mug-hot text-3xl text-amber-400"></i>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="p-4 rounded-2xl bg-white/5 border border-white/10 flex items-start gap-3.5">
+                                <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0 mt-0.5">
+                                    <i class="fa-solid fa-cake-candles"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-white text-sm sm:text-base">Quản Lý Thực Đơn Đồ Uống & Bánh Ngọt</h4>
+                                    <p class="text-xs sm:text-sm text-slate-300 mt-1">Phân loại danh mục sản phẩm trực quan, cập nhật giá bán, tùy chọn topping và trạng thái còn/hết món theo thời gian thực.</p>
+                                </div>
+                            </div>
+                            <div class="p-4 rounded-2xl bg-white/5 border border-white/10 flex items-start gap-3.5">
+                                <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
+                                    <i class="fa-solid fa-receipt"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-white text-sm sm:text-base">Theo Dõi Tiến Độ Đơn Hàng</h4>
+                                    <p class="text-xs sm:text-sm text-slate-300 mt-1">Đồng bộ trạng thái order từ quầy thu ngân tới khu vực pha chế (Chờ xử lý → Đang pha chế → Hoàn tất giao bàn).</p>
+                                </div>
+                            </div>
+                            <div class="p-4 rounded-2xl bg-white/5 border border-white/10 flex items-start gap-3.5">
+                                <div class="w-10 h-10 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center shrink-0 mt-0.5">
+                                    <i class="fa-solid fa-video"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-white text-sm sm:text-base">Tích Hợp Giám Sát Camera</h4>
+                                    <p class="text-xs sm:text-sm text-slate-300 mt-1">Bảng điều khiển theo dõi trực tiếp các khu vực quầy bar, không gian khách ngồi và bãi xe ngay trên giao diện quản trị.</p>
+                                </div>
+                            </div>
+                            <div class="p-4 rounded-2xl bg-white/5 border border-white/10 flex items-start gap-3.5">
+                                <div class="w-10 h-10 rounded-xl bg-fpt-orange/20 text-fpt-orange flex items-center justify-center shrink-0 mt-0.5">
+                                    <i class="fa-solid fa-user-shield"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-white text-sm sm:text-base">Phân Quyền Người Dùng (RBAC)</h4>
+                                    <p class="text-xs sm:text-sm text-slate-300 mt-1">Tách bạch rõ ràng quyền hạn truy cập giữa Quản trị viên (Admin), Nhân viên Thu ngân và Nhân viên Pha chế.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SLIDE 8: Tổng kết Kỳ 1 & Định hướng Hạ tầng Công nghệ -->
+                    <div class="slide-panel w-full max-w-4xl flex-col space-y-6" data-slide-index="8">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                            <div>
+                                <span class="text-xs font-mono text-fpt-orange font-bold">SLIDE 08 • SEMESTER 1 REVIEW & TECH INFRASTRUCTURE</span>
+                                <h3 class="text-2xl sm:text-3xl font-extrabold mt-1">Tổng Kết Kỳ 1 & Định Hướng Hạ Tầng Công Nghệ</h3>
+                            </div>
+                            <i class="fa-solid fa-rocket text-3xl text-fpt-orange"></i>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div class="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-2.5">
+                                <span class="text-xs font-mono text-sky-400 font-bold">TỐI ƯU PHẦN CỨNG PC</span>
+                                <h4 class="font-bold text-white text-base">So Sánh RTX 3060 12GB vs RTX 4060</h4>
+                                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                                    Đánh giá bài toán hiệu năng/giá thành phục vụ lập trình, máy ảo & đồ họa: <strong>RTX 3060 12GB</strong> ưu thế dung lượng VRAM lớn cho tác vụ render/AI cục bộ, trong khi <strong>RTX 4060</strong> nổi bật nhờ kiến trúc Ada Lovelace tiết kiệm điện và DLSS 3.
+                                </p>
+                            </div>
+                            <div class="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-2.5">
+                                <span class="text-xs font-mono text-emerald-400 font-bold">TRIỂN KHAI THỰC TẾ</span>
+                                <h4 class="font-bold text-white text-base">Tên Miền, Hosting & Mục Tiêu Kỳ 2</h4>
+                                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                                    Kế hoạch đăng ký tên miền riêng, cấu hình DNS & Hosting thực tế để đưa dự án Quản lý Quán Cà Phê lên môi trường Internet, đồng thời chinh phục JavaScript chuyên sâu và Cơ sở dữ liệu SQL.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="pt-1 flex flex-wrap items-center justify-between gap-3 border-t border-slate-800">
+                            <span class="text-xs font-mono text-slate-400">Nguyễn Đình Đăng Nhân (PK04809) • FPT Polytechnic Tây Nguyên</span>
+                            <button onclick="goToSlide(1, true)" class="px-4 py-2 rounded-xl bg-fpt-orange hover:bg-fpt-orangeDark text-white font-bold text-xs transition-colors cursor-pointer">
+                                <i class="fa-solid fa-rotate-left mr-1.5"></i> Quay lại Slide 01
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- THANH ĐIỀU KHIỂN SLIDE (TRƯỚC / CHỌN NHANH 1 → 8 / TIẾP THEO) -->
+                <div class="bg-slate-950 px-4 sm:px-6 py-4 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <button id="prev-slide-btn" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-semibold text-sm flex items-center justify-center gap-2 transition-all cursor-pointer">
+                        <i class="fa-solid fa-chevron-left"></i> Slide trước
+                    </button>
+
+                    <!-- Thanh chọn nhanh từ Slide 1 đến Slide 8 -->
+                    <div class="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
+                        <button onclick="goToSlide(1, false)" data-slide-btn="1" class="slide-selector-btn w-8 h-8 sm:w-9 sm:h-9 rounded-xl font-mono text-xs sm:text-sm font-bold bg-fpt-orange text-white transition-all cursor-pointer">1</button>
+                        <button onclick="goToSlide(2, false)" data-slide-btn="2" class="slide-selector-btn w-8 h-8 sm:w-9 sm:h-9 rounded-xl font-mono text-xs sm:text-sm font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition-all cursor-pointer">2</button>
+                        <button onclick="goToSlide(3, false)" data-slide-btn="3" class="slide-selector-btn w-8 h-8 sm:w-9 sm:h-9 rounded-xl font-mono text-xs sm:text-sm font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition-all cursor-pointer">3</button>
+                        <button onclick="goToSlide(4, false)" data-slide-btn="4" class="slide-selector-btn w-8 h-8 sm:w-9 sm:h-9 rounded-xl font-mono text-xs sm:text-sm font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition-all cursor-pointer">4</button>
+                        <button onclick="goToSlide(5, false)" data-slide-btn="5" class="slide-selector-btn w-8 h-8 sm:w-9 sm:h-9 rounded-xl font-mono text-xs sm:text-sm font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition-all cursor-pointer">5</button>
+                        <button onclick="goToSlide(6, false)" data-slide-btn="6" class="slide-selector-btn w-8 h-8 sm:w-9 sm:h-9 rounded-xl font-mono text-xs sm:text-sm font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition-all cursor-pointer">6</button>
+                        <button onclick="goToSlide(7, false)" data-slide-btn="7" class="slide-selector-btn w-8 h-8 sm:w-9 sm:h-9 rounded-xl font-mono text-xs sm:text-sm font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition-all cursor-pointer">7</button>
+                        <button onclick="goToSlide(8, false)" data-slide-btn="8" class="slide-selector-btn w-8 h-8 sm:w-9 sm:h-9 rounded-xl font-mono text-xs sm:text-sm font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition-all cursor-pointer">8</button>
+                    </div>
+
+                    <button id="next-slide-btn" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-fpt-orange hover:bg-fpt-orangeDark disabled:opacity-40 disabled:cursor-not-allowed text-white font-semibold text-sm flex items-center justify-center gap-2 transition-all cursor-pointer">
+                        Slide tiếp <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 10. CHÂN TRANG (FOOTER) -->
+    <footer class="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-fpt-darkCard py-8 px-4 sm:px-6">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500 dark:text-slate-400">
+            <div class="flex items-center gap-2.5">
+                <span class="w-2.5 h-2.5 rounded-full bg-fpt-orange"></span>
+                <span>© 2026 <strong>FPoly DigitalVault</strong> — Nguyễn Đình Đăng Nhân (PK04809) • FPT Polytechnic Tây Nguyên.</span>
+            </div>
+            <div class="flex items-center gap-4 font-mono text-xs">
+                <a href="#muc-luc" class="hover:text-fpt-orange transition-colors">Mục lục</a>
+                <span>•</span>
+                <button onclick="goToSlide(1, true)" class="hover:text-fpt-orange transition-colors cursor-pointer">Slide 1</button>
+                <span>→</span>
+                <button onclick="goToSlide(8, true)" class="hover:text-fpt-orange transition-colors cursor-pointer">Slide 8</button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 11. NÚT CUỘN NHANH LÊN ĐẦU TRANG (BACK TO TOP) -->
+    <button id="back-to-top" aria-label="Cuộn lên đầu trang" class="fixed bottom-6 right-6 z-40 w-12 h-12 rounded-2xl bg-fpt-orange hover:bg-fpt-orangeDark text-white shadow-xl shadow-fpt-orange/30 flex items-center justify-center translate-y-20 opacity-0 pointer-events-none transition-all duration-300 cursor-pointer">
+        <i class="fa-solid fa-arrow-up text-lg"></i>
+    </button>
+
+    <!-- MÃ JAVASCRIPT ĐIỀU KHIỂN TOÀN BỘ TƯƠNG TÁC -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            /* =====================================================================
+               1. CHẾ ĐỘ SÁNG / TỐI (LIGHT / DARK MODE) LƯU VÀO LOCALSTORAGE
+               ===================================================================== */
+            const rootHtml = document.documentElement;
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const themeIcon = document.getElementById('theme-icon');
+            const themeText = document.getElementById('theme-text');
+
+            function setThemeMode(mode) {
+                if (mode === 'dark') {
+                    rootHtml.classList.add('dark');
+                    themeIcon.className = 'fa-solid fa-sun';
+                    themeText.textContent = 'Chế độ Sáng';
+                } else {
+                    rootHtml.classList.remove('dark');
+                    themeIcon.className = 'fa-solid fa-moon';
+                    themeText.textContent = 'Chế độ Tối';
+                }
+            }
+
+            const storedTheme = localStorage.getItem('fpoly_vault_theme');
+            const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            setThemeMode(storedTheme || (systemDark ? 'dark' : 'light'));
+
+            themeToggleBtn.addEventListener('click', () => {
+                const nextMode = rootHtml.classList.contains('dark') ? 'light' : 'dark';
+                setThemeMode(nextMode);
+                localStorage.setItem('fpoly_vault_theme', nextMode);
+            });
+
+            /* =====================================================================
+               2. MENU MOBILE TOGGLE
+               ===================================================================== */
+            const mobileToggle = document.getElementById('mobile-menu-toggle');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            mobileToggle.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            document.querySelectorAll('.mobile-nav-link').forEach(link => {
+                link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+            });
+
+            /* =====================================================================
+               3. HIỆU ỨNG GÕ CHỮ (TYPING EFFECT) Ở HERO BANNER
+               ===================================================================== */
+            const typingOutput = document.getElementById('typing-output');
+            const terminalLines = [
+                'git clone https://github.com/nguyendinhdangnhan9a7-cell/Thu-vien-so-3.git',
+                'Sinh viên: Nguyễn Đình Đăng Nhân (PK04809) • FPT Polytechnic Tây Nguyên',
+                'Bấm vào từng thẻ bài để mở ngay Slide 01 → Slide 08!'
+            ];
+            let lineIdx = 0;
+            let charIdx = 0;
+            let deleting = false;
+
+            function runTypingEffect() {
+                const currentText = terminalLines[lineIdx];
+                if (deleting) {
+                    typingOutput.textContent = currentText.substring(0, charIdx - 1);
+                    charIdx--;
+                } else {
+                    typingOutput.textContent = currentText.substring(0, charIdx + 1);
+                    charIdx++;
+                }
+
+                let delay = deleting ? 26 : 50;
+                if (!deleting && charIdx === currentText.length) {
+                    delay = 2100;
+                    deleting = true;
+                } else if (deleting && charIdx === 0) {
+                    deleting = false;
+                    lineIdx = (lineIdx + 1) % terminalLines.length;
+                    delay = 400;
+                }
+                setTimeout(runTypingEffect, delay);
+            }
+            runTypingEffect();
+
+            /* =====================================================================
+               4. THANH TIẾN TRÌNH ĐỌC, BACK TO TOP & SCROLLSPY MỤC LỤC
+               ===================================================================== */
+            const progressBar = document.getElementById('reading-progress');
+            const backToTopBtn = document.getElementById('back-to-top');
+            const spyTargets = document.querySelectorAll('.spy-target');
+            const tocAnchors = document.querySelectorAll('.toc-anchor');
+            const navAnchors = document.querySelectorAll('.nav-anchor');
+
+            window.addEventListener('scroll', () => {
+                const scrollY = window.scrollY;
+                const maxScroll = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const percent = maxScroll > 0 ? (scrollY / maxScroll) * 100 : 0;
+                progressBar.style.width = `${percent}%`;
+
+                // Hiện / ẩn nút Back to Top
+                if (scrollY > 420) {
+                    backToTopBtn.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+                } else {
+                    backToTopBtn.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+                }
+
+                // Tự động tô sáng mục lục đang xem (Scrollspy)
+                let activeSection = '';
+                spyTargets.forEach(sec => {
+                    if (scrollY >= sec.offsetTop - 180) {
+                        activeSection = sec.getAttribute('id');
+                    }
+                });
+
+                tocAnchors.forEach(a => {
+                    a.classList.toggle('active-toc', a.getAttribute('data-toc') === activeSection);
+                });
+                navAnchors.forEach(a => {
+                    a.classList.toggle('active-nav', a.getAttribute('data-nav') === activeSection);
+                });
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            /* =====================================================================
+               5. HIỆU ỨNG XUẤT HIỆN MƯỢT MÀ KHI CUỘN (INTERSECTION OBSERVER REVEAL)
+               ===================================================================== */
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+            /* =====================================================================
+               6. THANH TÌM KIẾM & LỌC NHANH THẺ TÀI LIỆU TRONG THƯ VIỆN
+               ===================================================================== */
+            const vaultSearch = document.getElementById('vault-search');
+            const clearSearchBtn = document.getElementById('clear-search');
+            const libraryCards = document.querySelectorAll('.library-card');
+            const searchStatus = document.getElementById('search-status');
+
+            function handleSearch() {
+                const keyword = vaultSearch.value.trim().toLowerCase();
+                clearSearchBtn.classList.toggle('hidden', keyword === '');
+
+                let found = 0;
+                libraryCards.forEach(card => {
+                    const content = card.textContent.toLowerCase();
+                    const tags = (card.getAttribute('data-tags') || '').toLowerCase();
+                    if (content.includes(keyword) || tags.includes(keyword)) {
+                        card.classList.remove('hidden');
+                        found++;
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                });
+
+                if (keyword !== '') {
+                    searchStatus.classList.remove('hidden');
+                    searchStatus.textContent = found > 0
+                        ? `Tìm thấy ${found} mục học liệu phù hợp với từ khóa "${vaultSearch.value}". Bấm vào thẻ để mở Slide tương ứng!`
+                        : `Không tìm thấy học liệu khớp với "${vaultSearch.value}". Thử tìm: GitHub, VLOOKUP, VirtualBox, PDP102, Cafe, RTX...`;
+                } else {
+                    searchStatus.classList.add('hidden');
+                }
+            }
+
+            vaultSearch.addEventListener('input', handleSearch);
+            clearSearchBtn.addEventListener('click', () => {
+                vaultSearch.value = '';
+                handleSearch();
+                vaultSearch.focus();
+            });
+
+            /* =====================================================================
+               7. HỆ THỐNG SLIDE (1 ĐẾN 8), BẤM THẺ BÀI -> MỞ SLIDE & HASH URL
+               ===================================================================== */
+            let activeSlide = 1;
+            const totalSlidesCount = 8;
+            const slidePanels = document.querySelectorAll('.slide-panel');
+            const slideSelectorBtns = document.querySelectorAll('.slide-selector-btn');
+            const prevSlideBtn = document.getElementById('prev-slide-btn');
+            const nextSlideBtn = document.getElementById('next-slide-btn');
+            const slideBadgeCounter = document.getElementById('slide-badge-counter');
+            const slideProgress = document.getElementById('slide-progress');
+            const fullscreenToggle = document.getElementById('fullscreen-toggle');
+            const fullscreenIcon = document.getElementById('fullscreen-icon');
+            const slideDeckWrapper = document.getElementById('slide-deck-wrapper');
+            const copySlideLinkBtn = document.getElementById('copy-slide-link');
+            const copyLinkText = document.getElementById('copy-link-text');
+
+            window.goToSlide = function(num, shouldScroll = false, updateHash = true) {
+                if (num < 1 || num > totalSlidesCount) return;
+                activeSlide = num;
+
+                // 1. Hiển thị đúng Slide được chọn với hiệu ứng chuyển cảnh
+                slidePanels.forEach(panel => {
+                    const idx = parseInt(panel.getAttribute('data-slide-index'), 10);
+                    panel.classList.toggle('active', idx === activeSlide);
+                });
+
+                // 2. Tô sáng nút số Slide tương ứng (1 -> 8)
+                slideSelectorBtns.forEach(btn => {
+                    const idx = parseInt(btn.getAttribute('data-slide-btn'), 10);
+                    if (idx === activeSlide) {
+                        btn.classList.remove('bg-slate-800', 'text-slate-300');
+                        btn.classList.add('bg-fpt-orange', 'text-white', 'ring-2', 'ring-fpt-orange/50');
+                    } else {
+                        btn.classList.add('bg-slate-800', 'text-slate-300');
+                        btn.classList.remove('bg-fpt-orange', 'text-white', 'ring-2', 'ring-fpt-orange/50');
+                    }
+                });
+
+                slideBadgeCounter.textContent = `Slide ${activeSlide} / ${totalSlidesCount}`;
+                slideProgress.style.width = `${(activeSlide / totalSlidesCount) * 100}%`;
+                prevSlideBtn.disabled = (activeSlide === 1);
+                nextSlideBtn.disabled = (activeSlide === totalSlidesCount);
+
+                // 3. Cập nhật URL hash (#slide-1 ... #slide-8) bằng history.replaceState
+                if (updateHash && history.replaceState) {
+                    history.replaceState(null, '', `#slide-${activeSlide}`);
+                }
+
+                // 4. Cuộn mượt xuống khu vực trình chiếu nếu được kích hoạt từ thẻ bài
+                if (shouldScroll) {
+                    const slideSection = document.getElementById('trinh-chieu-slides');
+                    if (slideSection) {
+                        slideSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+            };
+
+            // Gắn sự kiện click cho toàn bộ các thẻ bài có thuộc tính data-slide="1" -> "8"
+            document.querySelectorAll('.doc-card[data-slide]').forEach(card => {
+                card.addEventListener('click', () => {
+                    const targetSlide = parseInt(card.getAttribute('data-slide'), 10);
+                    goToSlide(targetSlide, true, true);
+                });
+            });
+
+            prevSlideBtn.addEventListener('click', () => goToSlide(activeSlide - 1, false, true));
+            nextSlideBtn.addEventListener('click', () => goToSlide(activeSlide + 1, false, true));
+
+            // Điều hướng Slide bằng phím mũi tên Trái / Phải
+            document.addEventListener('keydown', (e) => {
+                if (document.activeElement === vaultSearch) return;
+                if (e.key === 'ArrowRight') goToSlide(activeSlide + 1, false, true);
+                if (e.key === 'ArrowLeft') goToSlide(activeSlide - 1, false, true);
+            });
+
+            // Chế độ Toàn màn hình (Fullscreen)
+            fullscreenToggle.addEventListener('click', () => {
+                if (!document.fullscreenElement) {
+                    slideDeckWrapper.requestFullscreen().catch(() => {});
+                } else {
+                    document.exitFullscreen().catch(() => {});
+                }
+            });
+
+            document.addEventListener('fullscreenchange', () => {
+                fullscreenIcon.className = document.fullscreenElement ? 'fa-solid fa-compress' : 'fa-solid fa-expand';
+            });
+
+            // Nút sao chép đường liên kết trực tiếp tới Slide hiện tại (ví dụ: .../#slide-8)
+            copySlideLinkBtn.addEventListener('click', () => {
+                const shareUrl = `${window.location.origin}${window.location.pathname}#slide-${activeSlide}`;
+                const tempInput = document.createElement('input');
+                tempInput.value = shareUrl;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempInput);
+
+                copyLinkText.textContent = `Đã chép #slide-${activeSlide}!`;
+                setTimeout(() => {
+                    copyLinkText.textContent = 'Sao chép link Slide';
+                }, 2200);
+            });
+
+            // Tự động mở đúng Slide nếu truy cập URL có đuôi #slide-1 đến #slide-8 (VD: .../#slide-8)
+            function checkUrlSlideHash() {
+                const hash = window.location.hash;
+                const match = hash.match(/^#slide-([1-8])$/);
+                if (match) {
+                    const targetSlide = parseInt(match[1], 10);
+                    goToSlide(targetSlide, true, false);
+                } else {
+                    goToSlide(1, false, false);
+                }
+            }
+
+            window.addEventListener('hashchange', checkUrlSlideHash);
+            checkUrlSlideHash();
+        });
+    </script>
+</body>
+</html>
